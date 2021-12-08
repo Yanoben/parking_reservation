@@ -3,12 +3,13 @@
 
 <head>
     <title>Title</title>
-    <link rel="stylesheet" type="text/css" href="/static/css/base.css" />,
+    <link rel="stylesheet" type="text/css" href="/static/css/base.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/card.css" />
 </head>
 
 <body>
     <div id="header">
-        <span class="logo">LOGO</span>
+        <span class="logo"><a href="{% url "dashboard"%}">LOGO</a></span>
         <span class="user">
     {% if request.user.is_authenticated %}
       Hello {{ request.user.first_name }},
