@@ -1,4 +1,5 @@
 import os
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -20,6 +21,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'users',
     'park_reservation',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -27,7 +29,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
@@ -118,7 +119,7 @@ STATICFILES_DIRS = (
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
-LOGIN_REDIRECT_URL = '/dashboard/'
-
-LOGIN_URL = 'register'
 LOGOUT_URL = 'logout'
+
+LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = 'login'

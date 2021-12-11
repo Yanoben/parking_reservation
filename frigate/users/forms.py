@@ -1,49 +1,27 @@
-'''from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
-from .models import Profile
-
-
-class UserRegistrationForm(UserCreationForm, forms.ModelForm):
-    password = forms.CharField(label='Password', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Repeat password',
-                                widget=forms.PasswordInput)
-
-    class Meta:
-        model = Profile
-        fields = ('username', 'email', 'role')
-
-    def clean_password2(self):
-        cd = self.cleaned_data
-        if cd['password'] != cd['password2']:
-            raise forms.ValidationError('Passwords don\'t match.')
-        return cd['password2']
-
-
-class LoginForm(forms.Form):
-    username = forms.CharField()
-    password = forms.CharField(widget=forms.PasswordInput)
-
-'''
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
+from .models import Parking_place
 
-choice = [('Manager', 'Manager'), ('Employee', 'Employee')]
+
+choice = (('Manager', 'Manager'), ('Employee', 'Employee'))
 
 
 class RegisterForm(UserCreationForm):
+    role = forms.ChoiceField(
+        choices=choice,
+        required=True,)
     first_name = forms.CharField(
         max_length=100,
         required=True,
         widget=forms.TextInput(attrs={'placeholder': 'First Name',
-                                      'class': 'form-control'
+                                      'class': 'form-control',
                                       }))
     last_name = forms.CharField(
         max_length=100,
         required=True,
         widget=forms.TextInput(attrs={'placeholder': 'Last Name',
-                                      'class': 'form-control'
+                                      'class': 'form-control',
                                       }))
     username = forms.CharField(
         max_length=100,
@@ -54,16 +32,15 @@ class RegisterForm(UserCreationForm):
     email = forms.EmailField(
         required=True,
         widget=forms.TextInput(attrs={'placeholder': 'Email',
-                                      'class': 'form-control'
+                                      'class': 'form-control',
                                       }))
-    role = forms.ChoiceField(choices=choice)
     password1 = forms.CharField(
         max_length=50,
         required=True,
         widget=forms.PasswordInput(attrs={'placeholder': 'Password',
                                           'class': 'form-control',
                                           'data-toggle': 'password',
-                                          'id': 'password'
+                                          'id': 'password',
                                           }))
     password2 = forms.CharField(
         max_length=50,
@@ -77,7 +54,8 @@ class RegisterForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name',
-                  'username', 'email', 'password1', 'password2']
+                  'username', 'email', 'role',
+                  'password1', 'password2']
 
 
 class LoginForm(AuthenticationForm):
@@ -101,3 +79,33 @@ class LoginForm(AuthenticationForm):
     class Meta:
         model = User
         fields = ['username', 'password', 'remember_me']
+
+
+class UpdateUserForm(forms.ModelForm):
+    username = forms.CharField(
+        max_length=100,
+        required=True,
+        widget=forms.TextInput(attrs={'class': 'form-control'}))
+    email = forms.EmailField(
+        required=True,
+        widget=forms.TextInput(attrs={'class': 'form-control'}))
+
+    class Meta:
+        model = User
+        fields = ['username', 'email']
+
+
+class CreateParkForm(forms.ModelForm):
+    class Meta:
+        model = Parking_place
+        fields = ('owner', 'from_time', 'to_time')
+        widgets = {
+            'from_time': forms.TimeInput(format='%H:%M'),
+            'to_time': forms.TimeInput(format='%H:%M'),
+        }
+
+
+class ChangeParkForm(forms.ModelForm):
+    class Meta:
+        model = Parking_place
+        fields = ('owner', 'from_time', 'to_time')
