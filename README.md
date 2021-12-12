@@ -13,7 +13,6 @@ To get this project up and running locally on your computer follow the following
 3. Open a browser and go to http://localhost:8000/
 
 
-# REST API
 ## Part of Api:
 
 
