@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from django.contrib.auth.models import User
-from .models import Parking_place
+from .models import Parking_place, MyUser
 
 
 choice = (('Manager', 'Manager'), ('Employee', 'Employee'))
@@ -9,8 +8,9 @@ choice = (('Manager', 'Manager'), ('Employee', 'Employee'))
 
 class RegisterForm(UserCreationForm):
     role = forms.ChoiceField(
-        choices=choice,
-        required=True,)
+        required=True,
+        choices=choice
+    )
     first_name = forms.CharField(
         max_length=100,
         required=True,
@@ -52,7 +52,7 @@ class RegisterForm(UserCreationForm):
                                           }))
 
     class Meta:
-        model = User
+        model = MyUser
         fields = ['first_name', 'last_name',
                   'username', 'email', 'role',
                   'password1', 'password2']
@@ -77,7 +77,7 @@ class LoginForm(AuthenticationForm):
     remember_me = forms.BooleanField(required=False)
 
     class Meta:
-        model = User
+        model = MyUser
         fields = ['username', 'password', 'remember_me']
 
 
@@ -91,14 +91,14 @@ class UpdateUserForm(forms.ModelForm):
         widget=forms.TextInput(attrs={'class': 'form-control'}))
 
     class Meta:
-        model = User
+        model = MyUser
         fields = ['username', 'email']
 
 
 class CreateParkForm(forms.ModelForm):
     class Meta:
         model = Parking_place
-        fields = ('owner', 'from_time', 'to_time')
+        fields = ('owner', 'from_time', 'to_time', 'description')
         widgets = {
             'from_time': forms.TimeInput(format='%H:%M'),
             'to_time': forms.TimeInput(format='%H:%M'),
@@ -108,4 +108,4 @@ class CreateParkForm(forms.ModelForm):
 class ChangeParkForm(forms.ModelForm):
     class Meta:
         model = Parking_place
-        fields = ('owner', 'from_time', 'to_time')
+        fields = ('owner', 'from_time', 'to_time', 'description')

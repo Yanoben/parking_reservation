@@ -4,15 +4,58 @@ from django.contrib.auth.views import (LoginView,
                                        PasswordChangeView,
                                        PasswordResetView)
 from django.contrib.messages.views import SuccessMessageMixin
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import View
 
+from .models import Parking_place
 from .forms import LoginForm, RegisterForm, ChangeParkForm, CreateParkForm
 
 
+from django.conf import settings
+User = settings.AUTH_USER_MODEL
+
+
 def home(request):
-    return render(request, 'users/home.html')
+    parks = Parking_place.objects.all()
+    parks_count = parks.count()
+    return render(request,
+                  'users/home.html',
+                  {'parks': parks,
+                   'count': parks_count,
+                   'booking': True})
+
+
+@login_required
+def create_park(request):
+    form = CreateParkForm(request.POST or None)
+    if form.is_valid():
+        park = form.save(commit=False)
+        park.save()
+        return redirect(to='/')
+    return render(request, 'users/create_park.html',
+                  {'form': form,
+                   'is_edit': False})
+
+
+@login_required
+def change_park(request, park_id):
+    if request.user.role == 'Employee':
+        return redirect(to='/')
+    park = get_object_or_404(Parking_place, id=park_id)
+    form = CreateParkForm(request.POST or None)
+    if form.is_valid():
+        park.save()
+        return redirect(to='/')
+    return render(request, 'users/create_park.html',
+                  {'form': form,
+                   'is_edit': True})
+
+
+@login_required
+def delete_park(request, park_id):
+    Parking_place.objects.filter(id=park_id).delete()
+    return redirect(to='/')
 
 
 class RegisterView(View):

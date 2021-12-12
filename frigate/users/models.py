@@ -1,35 +1,23 @@
-from django.contrib.auth.models import User
 from django.db import models
-from PIL import Image
+from django.contrib.auth.models import AbstractUser
+from django.conf import settings
 
 
-# Extending User Model Using a One-To-One Link
-class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+CHOICES = (
+    ('Manager', 'Manager'),
+    ('Employee', 'Employee', )
+)
 
-    avatar = models.ImageField(
-        default='default.jpg', upload_to='profile_images')
-    bio = models.TextField()
 
-    def __str__(self):
-        return self.user.username
-
-    # resizing images
-    def save(self, *args, **kwargs):
-        super().save()
-
-        img = Image.open(self.avatar.path)
-
-        if img.height > 100 or img.width > 100:
-            new_img = (100, 100)
-            img.thumbnail(new_img)
-            img.save(self.avatar.path)
+class MyUser(AbstractUser):
+    role = models.CharField(max_length=8, choices=CHOICES)
 
 
 class Parking_place(models.Model):
     owner = models.CharField(max_length=30)
-    from_time = models.TimeField()
-    to_time = models.TimeField()
+    from_time = models.TimeField(editable=True, default='10:00')
+    to_time = models.TimeField(editable=True, default='17:00')
+    description = models.TextField(max_length=100, blank=True)
 
     def __str__(self):
         return self.owner

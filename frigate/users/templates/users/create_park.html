@@ -1,0 +1,63 @@
+{% extends "users/base.html" %} {% block title %} Create Park {% endblock title%} {% block content %}
+<div class="form-content my-3 p-3">
+    <div class="cotainer">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    {% if not is_edit %}
+                    <h3>
+                        <div class="card-header">Create Park space</div>
+                    </h3>
+                    {% else %}
+                    <h3>
+                        <div class="card-header">Change Park space</div>
+                    </h3>
+                    {% endif %}
+                    <div class="card-body">
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="form-group row">
+                                <label for="email_address" class="col-md-4 col-form-label text-md-right">Owner</label>
+                                <div class="col-md-6">
+                                    {{ form.owner }}
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="password" class="col-md-4 col-form-label text-md-right">Booking time from</label>
+                                <div class="col-md-6">
+                                    {{ form.from_time }}
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="password" class="col-md-4 col-form-label text-md-right">To</label>
+                                <div class="col-md-6">
+                                    {{ form.to_time }}
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="password" class="col-md-4 col-form-label text-md-right">Description</label>
+                                <div class="col-md-6">
+                                    {{ form.description }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 offset-md-4">
+                                {% if not is_edit %}
+                                <button type="submit" class="btn btn-primary">
+                                    Create
+                                </button> {% else %}
+                                <button type="submit" class="btn btn-primary">
+                                    Change
+                                </button> {% endif %}
+                            </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

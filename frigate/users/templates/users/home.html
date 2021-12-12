@@ -4,117 +4,25 @@
     <p class="lead">
         Welcome, {{user.first_name.title|default:'Guest'}}
     </p>
-    <hr class="my-4"> {% if user.is_authenticated %}
+    {% if user.is_authenticated %}
+    <a class="btn btn-primary btn-lg" href="{% url 'create_park' %}" role="button">Booking Space</a>
+    <hr class="my-4"> {% for park in parks %}
     <div class="row">
         <div class="col-sm-6">
             <div class="card">
                 <div class="card-body">
-                    <h3 class="card-title">Parking space №1</h5><br>
-                        <p class="card-text">Owner: </p>
-                        <p class="card-text">Time:</p>
-
-                        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-                        <link href="https://www.malot.fr/bootstrap-datetimepicker/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css" rel="stylesheet">
-                        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-                        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-                        <script src="https://www.malot.fr/bootstrap-datetimepicker/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-
-                        <div class="form-group">
-                            <input class="form-control" type="text" id="datetimepicker" readonly>
-                        </div>
-                        <p>To</p>
-                        <div class="form-group">
-                            <input class="form-control" type="text" id="datetimepicker2" readonly>
-                        </div>
-                        <script type="text/javascript">
-                            $(document).ready(function() {
-                                $("#datetimepicker").datetimepicker({
-                                    pickDate: false,
-                                    minuteStep: 10,
-                                    pickerPosition: 'bottom-right',
-                                    format: 'HH:ii p',
-                                    autoclose: true,
-                                    showMeridian: true,
-                                    startView: 1,
-                                    maxView: 1,
-                                });
-                                $(".datetimepicker").find('thead th').remove();
-                                $(".datetimepicker").find('thead').append($('<th class="switch">').text('Pick Time'));
-                                $('.switch').css('width', '190px');
-                            });
-                            $(document).ready(function() {
-                                $("#datetimepicker2").datetimepicker({
-                                    pickDate: false,
-                                    minuteStep: 10,
-                                    pickerPosition: 'bottom-right',
-                                    format: 'HH:ii p',
-                                    autoclose: true,
-                                    showMeridian: true,
-                                    startView: 1,
-                                    maxView: 1,
-                                });
-                                $(".datetimepicker").find('thead th').remove();
-                                $(".datetimepicker").find('thead').append($('<th class="switch">').text('Pick Time'));
-                                $('.switch').css('width', '190px');
-                            });
-                        </script>
-
-                        <a href="#" class="btn btn-primary">Booking</a>
+                    <h3 class="card-title">Parking space №{{ park.id }}</h3><br> {% if booking %}
+                    <p>Owner: {{ park.owner }}</p>
+                    <p>Booking time from: {{ park.from_time }}</p>
+                    <p>To: {{ park.to_time }}</p>
+                    <p>Description: {{ park.description }}</p>
+                    {% if user.role == "Manager" %}
+                    <a class="btn btn-primary btn-lg" href="{% url 'change_park' park.id %}" role="button">Change</a>
+                    <a class="btn btn-primary btn-lg" href="{% url 'delete_park' park.id %}" role="button">Delete</a> {% endif %} {% endif %}
                 </div>
             </div>
         </div>
-        <div class="col-sm-6">
-            <div class="card">
-                <div class="card-body">
-                    <h3 class="card-title">Parking space №2</h5><br>
-                        <p class="card-text">Owner: </p>
-                        <p class="card-text">Time:</p>
-
-                        <div class="form-group">
-                            <input class="form-control" type="text" id="datetimepicker3" readonly>
-                        </div>
-                        <p>To</p>
-                        <div class="form-group">
-                            <input class="form-control" type="text" id="datetimepicker4" readonly>
-                        </div>
-                        <script type="text/javascript">
-                            $(document).ready(function() {
-                                $("#datetimepicker3").datetimepicker({
-                                    pickDate: false,
-                                    minuteStep: 10,
-                                    pickerPosition: 'bottom-right',
-                                    format: 'HH:ii p',
-                                    autoclose: true,
-                                    showMeridian: true,
-                                    startView: 1,
-                                    maxView: 1,
-                                });
-                                $(".datetimepicker").find('thead th').remove();
-                                $(".datetimepicker").find('thead').append($('<th class="switch">').text('Pick Time'));
-                                $('.switch').css('width', '190px');
-                            });
-                            $(document).ready(function() {
-                                $("#datetimepicker4").datetimepicker({
-                                    pickDate: false,
-                                    minuteStep: 10,
-                                    pickerPosition: 'bottom-right',
-                                    format: 'HH:ii p',
-                                    autoclose: true,
-                                    showMeridian: true,
-                                    startView: 1,
-                                    maxView: 1,
-                                });
-                                $(".datetimepicker").find('thead th').remove();
-                                $(".datetimepicker").find('thead').append($('<th class="switch">').text('Pick Time'));
-                                $('.switch').css('width', '190px');
-                            });
-                        </script>
-
-                        <a href="#" class="btn btn-primary">Booking</a>
-                </div>
-            </div>
-        </div>
-    </div><br> {% endif %}
+    </div><br> {% endfor %}{% endif %}
     <p class="lead">
         {% if not user.is_authenticated %}
         <a class="btn btn-primary btn-lg" href="{% url 'login' %}" role="button">Sign in</a> {% endif %}
