@@ -1,0 +1,11 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "database": "${workspaceFolder:parking_reservation}/frigate/db.sqlite3",
+            "name": "DB"
+        }
+    ],
+    "sqltools.useNodeRuntime": true
+}
