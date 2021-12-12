@@ -10,8 +10,8 @@ from users.views import ChangePasswordView, CustomLoginView, ResetPasswordView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
     path('', include('users.urls')),
+    path('api/', include('api.urls')),
 
     path('login/',
          CustomLoginView.as_view(

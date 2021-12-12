@@ -21,6 +21,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'api',
     'users',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -28,6 +29,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework.authtoken',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -62,6 +65,16 @@ TEMPLATES = [
 
 
 WSGI_APPLICATION = 'frigate.wsgi.application'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ],
+
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
 
 
 # Database
@@ -123,3 +136,8 @@ LOGOUT_URL = 'logout'
 
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = 'login'
+
+
+ROLES = {
+    'MANAGER_ROLE': 'Manager',
+}

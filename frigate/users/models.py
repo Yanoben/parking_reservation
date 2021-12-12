@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.conf import settings
+from frigate.settings import ROLES
 
 
 CHOICES = (
@@ -11,6 +11,10 @@ CHOICES = (
 
 class MyUser(AbstractUser):
     role = models.CharField(max_length=8, choices=CHOICES)
+
+    @property
+    def is_moderator(self):
+        return self.role == ROLES['MODERATOR_ROLE']
 
 
 class Parking_place(models.Model):
